@@ -20,7 +20,7 @@ const RootStack = createStackNavigator<RootStackParamList>();
 
 export const Router = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer linking={{ enabled: true, prefixes: [''] }}>
       {/* <RootStack.Navigator initialRouteName="Product"> */}
       <RootStack.Navigator initialRouteName="Home">
         <RootStack.Screen name="Home" component={HomeView} />
