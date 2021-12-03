@@ -78,7 +78,7 @@ const HomeView = (props: Props) => {
               <Text
                 style={{
                   color: "red",
-                  marginBottom: "10px",
+                  marginBottom: 10,
                 }}
               >
                 {item.name}

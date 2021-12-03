@@ -9,6 +9,8 @@ import {
   StyleSheet,
   View,
 } from "react-native";
+import { ScrollView } from "react-native-gesture-handler";
+import { Check } from "../../components/Icons";
 import { RootStackParamList } from "../../navigation";
 
 const PRODUCT_QUERY = gql`
@@ -223,9 +225,8 @@ const ProductView = ({ navigation, route }: Props) => {
       : images.filter((image) => image.isTitle === true)[0]; // or main image
 
   return (
-    <View
-      style={{
-        height: "100%",
+    <ScrollView
+      contentContainerStyle={{
         justifyContent: "center",
         alignItems: "center",
       }}
@@ -257,7 +258,7 @@ const ProductView = ({ navigation, route }: Props) => {
                   height: 50,
                 }}
               >
-                <Text key={i}>OK</Text>
+                <Check fill="white" />
               </View>
             ) : (
               <TouchableOpacity
@@ -288,18 +289,19 @@ const ProductView = ({ navigation, route }: Props) => {
             <View
               key={i}
               style={{
-                width: "250px",
+                width: 250,
                 flexDirection: "row",
                 justifyContent: "space-between",
               }}
             >
+              <Check />
               <Text style={{ backgroundColor: "red" }}>
                 {subProduct.article}
               </Text>
               <View
                 style={{
                   flexDirection: "row",
-                  width: "65px",
+                  width: 65,
                   justifyContent: "space-between",
                 }}
               >
@@ -322,7 +324,7 @@ const ProductView = ({ navigation, route }: Props) => {
               <View
                 key={i}
                 style={{
-                  width: "250px",
+                  width: 250,
                   flexDirection: "row",
                   justifyContent: "space-between",
                 }}
@@ -331,7 +333,7 @@ const ProductView = ({ navigation, route }: Props) => {
                 <View
                   style={{
                     flexDirection: "row",
-                    width: "65px",
+                    width: 65,
                     justifyContent: "space-between",
                   }}
                 >
@@ -343,7 +345,7 @@ const ProductView = ({ navigation, route }: Props) => {
           )
         )}
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
