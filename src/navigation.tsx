@@ -5,14 +5,13 @@ import Cart from "./views/Cart";
 import CategoryView from "./views/CategoryView/CategoryView";
 import HomeView from "./views/HomeView/HomeView";
 import ProductView from "./views/ProductView/ProductView";
-// import Bag from "./views/Bag";
 
 export type RootStackParamList = {
   Home: undefined;
-  Category: { categoryId: number };
+  Category: { categoryId: string };
   Cart: {};
   Product: {
-    id: number;
+    id: string;
   };
 };
 

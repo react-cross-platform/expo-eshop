@@ -4,11 +4,26 @@ import React from "react";
 import { FlatList, SafeAreaView, Text, View, Image } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { RootStackParamList } from "../../navigation";
-// import { ICategory } from "@src/modules/product/model";
 
 type Props = NativeStackScreenProps<RootStackParamList, "Home">;
 
-const CATEGORY_ID = 123;
+type Category = {
+  id: string;
+  name: string;
+  alias: string;
+  parent: {
+    id: string;
+  };
+  image: {
+    src: string;
+  };
+};
+
+type CategoriesData = {
+  categories: Category[];
+};
+
+type CategoriesVars = {};
 
 const CATEGORIES_QUERY = gql`
   query categories {
@@ -27,49 +42,36 @@ const CATEGORIES_QUERY = gql`
 `;
 
 const HomeView = (props: Props) => {
-  const { route, navigation } = props;
+  const { navigation } = props;
 
-  const { loading, error, data } = useQuery(CATEGORIES_QUERY);
+  const { loading, error, data } = useQuery<CategoriesData, CategoriesVars>(
+    CATEGORIES_QUERY
+  );
   if (loading) return <Text>Loading...</Text>;
   if (error) {
     console.error(error);
     return <Text>Error :(</Text>;
   }
 
-  const { categories } = data;
-  const startCats = [];
-  const childrenMap = {};
-  for (const cat of categories!) {
-    if (cat.parent) {
-      const key = cat.parent.id;
-      if (!(key in childrenMap)) {
-        childrenMap[key] = [];
+  const rootCategories: Category[] = [];
+  const childrenCategories: { [id: Category["id"]]: Category[] } = {};
+  const { categories } = data!;
+  categories.forEach((category) => {
+    if (category.parent) {
+      const rootCategoryId = category.parent.id;
+      if (!(rootCategoryId in childrenCategories)) {
+        childrenCategories[rootCategoryId] = [];
       }
-      childrenMap[key].push(cat);
+      childrenCategories[rootCategoryId].push(category);
     } else {
-      startCats.push(cat);
+      rootCategories.push(category);
     }
-  }
-
-  const prev = {
-    products: [1, 2, 3, 4, 5],
-  };
-
-  const newResult = {
-    products: [6, 7, 8, 9, 10],
-  };
-
-  const result = {
-    products: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],
-  };
-
-  console.log("result", result);
+  });
 
   return (
     <SafeAreaView>
-      <Text onPress={() => navigation.navigate("Cart", {})}>Cart</Text>
       <FlatList
-        data={startCats}
+        data={rootCategories}
         renderItem={({ item, index }) => {
           return (
             <View style={{ flexDirection: "row" }} key={item.id}>
@@ -81,7 +83,7 @@ const HomeView = (props: Props) => {
               >
                 {item.name}
               </Text>
-              {childrenMap[item.id].map((el) => {
+              {childrenCategories[item.id].map((category) => {
                 return (
                   <TouchableOpacity
                     style={{
@@ -89,9 +91,11 @@ const HomeView = (props: Props) => {
                       flexDirection: "row",
                     }}
                     onPress={() =>
-                      navigation.navigate("Category", { categoryId: el.id })
+                      navigation.navigate("Category", {
+                        categoryId: category.id,
+                      })
                     }
-                    key={el.id}
+                    key={category.id}
                   >
                     <View
                       style={{
@@ -104,7 +108,7 @@ const HomeView = (props: Props) => {
                       <View>
                         <Image
                           style={{ width: 75, height: 75 }}
-                          source={{ uri: el.image.src }}
+                          source={{ uri: category.image.src }}
                         />
                       </View>
                       <View>
@@ -114,7 +118,7 @@ const HomeView = (props: Props) => {
                             textAlign: "center",
                           }}
                         >
-                          {el.name}
+                          {category.name}
                         </Text>
                       </View>
                     </View>
