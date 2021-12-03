@@ -5,7 +5,7 @@ module.exports = {
   typescript: true,
   memo: true,
   outDir: "src/components/Icons",
-  svgProps: { fill: "black", width: 20, height: 20 },
+  svgProps: { fill: "black", width: 24, height: 24 },
   dimensions: false,
 //   ignoreExisting: true, // Don't overwrite already generated *.tsx files
 };

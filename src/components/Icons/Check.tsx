@@ -5,8 +5,8 @@ import { memo } from "react";
 const SvgCheck = (props: SvgProps) => (
   <Svg
     xmlns="http://www.w3.org/2000/svg"
-    width={20}
-    height={20}
+    width={24}
+    height={24}
     viewBox="0 0 405.272 405.272"
     style={{
       enableBackground: "new 0 0 405.272 405.272",

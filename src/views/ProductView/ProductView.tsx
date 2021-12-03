@@ -10,7 +10,13 @@ import {
   View,
 } from "react-native";
 import { ScrollView } from "react-native-gesture-handler";
-import { Check } from "../../components/Icons";
+import {
+  Check,
+  CheckCircle,
+  CheckCircleFilled,
+  CircleEmpty,
+  CircleFilled,
+} from "../../components/Icons";
 import { RootStackParamList } from "../../navigation";
 
 const PRODUCT_QUERY = gql`
@@ -250,35 +256,15 @@ const ProductView = ({ navigation, route }: Props) => {
         {imagesWithColor.length > 0 &&
           imagesWithColor.map((image, i) =>
             activeAttributeValueIds.includes(image.attributeValue!.id) ? (
-              <View
-                key={i}
-                style={{
-                  backgroundColor: image.attributeValue!.value,
-                  width: 50,
-                  height: 50,
-                }}
-              >
-                <Check fill="white" />
-              </View>
+              <CheckCircleFilled fill={image.attributeValue?.value} />
             ) : (
               <TouchableOpacity
                 key={i}
-                style={{
-                  backgroundColor: image!.attributeValue!.value,
-                  borderRadius: 1,
-                  width: 50,
-                  height: 50,
-                }}
                 onPress={() => {
                   setActiveAttributeValueIds([image.attributeValue!.id]);
                 }}
               >
-                <Text
-                  key={i}
-                  style={{
-                    backgroundColor: image.attributeValue!.value,
-                  }}
-                />
+                <CircleFilled fill={image.attributeValue?.value} />
               </TouchableOpacity>
             )
           )}
@@ -294,7 +280,7 @@ const ProductView = ({ navigation, route }: Props) => {
                 justifyContent: "space-between",
               }}
             >
-              <Check />
+              <CheckCircleFilled fill={"orange"} />
               <Text style={{ backgroundColor: "red" }}>
                 {subProduct.article}
               </Text>
@@ -329,6 +315,7 @@ const ProductView = ({ navigation, route }: Props) => {
                   justifyContent: "space-between",
                 }}
               >
+                <CircleEmpty fill="grey" />
                 <Text>{subProduct.article}</Text>
                 <View
                   style={{
